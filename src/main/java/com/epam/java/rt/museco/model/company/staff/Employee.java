@@ -9,26 +9,25 @@ import java.util.UUID;
  * Municipal Service Company
  */
 public class Employee extends Person {
-    private UUID id = UUID.randomUUID();
     private Position position;
     private Term term;
 
     public Employee() {
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public Term getTerm() {
-        return term;
+        Term copyTerm = new Term();
+        return copyTerm.copyOf(this.term);
     }
 
     public void setTerm(Term term) {
-        this.term = term;
+        // could be some checks
+        this.term.copyOf(term);
     }
 
     public Position getPosition() {
+        Position positionCopy = new Position();
+
         return position;
     }
 

@@ -4,9 +4,12 @@ import java.util.UUID;
 
 /**
  * Municipal Service Company
+ * Should be used as a base class for child entities, which should store
+ * first name, last name and middle name, and should return concatenated
+ * name value
  */
 public class Person {
-    private UUID id = UUID.randomUUID();
+    private UUID id;
     private String firstName;
     private String lastName;
     private String middleName;
@@ -14,12 +17,21 @@ public class Person {
     public Person() {
     }
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        if (id == null) this.id = UUID.randomUUID();
+        else this.id = id;
+    }
+
     public String getFirstName() {
         return firstName;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -27,7 +39,7 @@ public class Person {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getMiddleName() {
@@ -35,6 +47,19 @@ public class Person {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        this.middleName = middleName.trim();
+    }
+
+    public String getShortName() {
+        return (this.firstName != null && this.lastName != null) ? this.firstName.concat(" ").concat(this.lastName) :
+                ((this.firstName != null) ? this.firstName : this.lastName);
+    }
+
+    public String getFullName() {
+        return (this.firstName != null && this.lastName != null && this.middleName != null) ?
+                this.firstName.concat(" ").concat(this.middleName).concat(" ").concat(this.lastName) :
+                ((this.middleName == null ) ? this.getShortName() :
+                        ((this.firstName != null) ? this.firstName.concat(" ").concat(this.middleName) :
+                                this.lastName.concat(" ").concat(this.middleName)));
     }
 }
