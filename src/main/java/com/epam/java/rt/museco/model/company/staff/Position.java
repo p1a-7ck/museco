@@ -1,8 +1,9 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.model.general.Term;
+import org.joda.money.Money;
 
-import java.util.Currency;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -11,9 +12,10 @@ import java.util.UUID;
 public class Position {
     private UUID id;
     private String name;
-    private Currency salary;
-    private Currency hourCost;
-    private Term term;
+    private Money salary;
+    private Money hourCost;
+    private Term term = new Term();
+    private Staff parentStaff;
 
     public Position() {
     }
@@ -45,23 +47,34 @@ public class Position {
         this.name = name;
     }
 
-    public Currency getSalary() {
-        return salary;
+    public Money getSalary() {
+        return Money.of(this.salary.getCurrencyUnit(), this.salary.getAmount());
     }
 
-    public void setSalary(Currency salary) {
-        Currency c;
-        c.
-        if (salary.` >= 0)
-        this.salary = salary;
+    public void setSalary(Money salary) {
+        if (salary.getAmount().compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Salary amount should be more than zero");
+        this.salary = Money.of(salary.getCurrencyUnit(), salary.getAmount());
     }
 
-    public Currency getHourCost() {
-        return hourCost;
+    public Money getHourCost() {
+        return Money.of(this.hourCost.getCurrencyUnit(), this.hourCost.getAmount());
     }
 
-    public void setHourCost(Currency hourCost) {
-        this.hourCost = hourCost;
+    public void setHourCost(Money hourCost) {
+        if (hourCost.getAmount().compareTo(BigDecimal.ZERO) < 0)
+            throw new IllegalArgumentException("Hour cost amount should be more than zero");
+        this.hourCost = Money.of(hourCost.getCurrencyUnit(), hourCost.getAmount());
+    }
+
+    public Staff getParentStaff() {
+        return parentStaff;
+    }
+
+    public void setParentStaff(Staff parentStaff) {
+        if (this.parentStaff != null) if (!this.parentStaff.isChildPosition(this.id))
+            throw new IllegalArgumentException("There are no selected position-object in staff-object aggregator");
+        this.parentStaff = parentStaff;
     }
 
     public Position copyOf(Position position) {
@@ -70,6 +83,7 @@ public class Position {
         this.setSalary(position.getSalary());
         this.setHourCost(position.getHourCost());
         this.setTerm(position.getTerm());
+        this.setParentStaff(position.getParentStaff());
         return this; // return Position for inline-code use
     }
 }
