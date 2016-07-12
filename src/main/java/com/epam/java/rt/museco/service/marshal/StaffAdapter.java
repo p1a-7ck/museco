@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public final class StaffAdapter extends XmlAdapter<String, Staff> {
 
-
     public Staff unmarshal(String v) throws Exception {
         return null;//
     }

@@ -8,12 +8,42 @@
     <artifactId>museco</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.joda</groupId>
-            <artifactId>joda-money</artifactId>
-            <version>0.10.0</version>
-        </dependency>
-    </dependencies>
+    <profiles>
+        <profile>
+            <id>development</id>
+            <activation>
+                <jdk>1.8</jdk>
+                <os>
+                    <name>Windows 8.1</name>
+                    <family>Windows</family>
+                    <arch>x64</arch>
+                    <version>9600</version>
+                </os>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.joda</groupId>
+                    <artifactId>joda-money</artifactId>
+                    <version>0.10.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                    <version>1.7.7</version>
+                </dependency>
+                <dependency>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                    <version>1.1.2</version>
+                </dependency>
+                <!--<dependency>-->
+                    <!--<groupId>ch.qos.logback</groupId>-->
+                    <!--<artifactId>logback-core</artifactId>-->
+                    <!--<version>1.1.2</version>-->
+                <!--</dependency>-->
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>
