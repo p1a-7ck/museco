@@ -22,6 +22,22 @@ public class Staff {
     public Staff() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
     public void addPosition(Position position) {
         Position newPosition = new Position();
         newPosition.copyOf(position).setParentStaff(this);
@@ -40,5 +56,17 @@ public class Staff {
             if (employee.getId().equals(id))
                 return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Staff {" +
+                "name=" + this.name +
+                ", detail=" + this.detail +
+                ", positions=" + this.positions +
+                ", employees=" +
+                ", payrolls=" +
+                ", payments=" +
+                "}";
     }
 }

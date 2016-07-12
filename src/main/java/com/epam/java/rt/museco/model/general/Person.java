@@ -21,6 +21,10 @@ public class Person {
         return id;
     }
 
+    public void setId() {
+        this.id = UUID.randomUUID();
+    }
+
     public void setId(UUID id) {
         if (id == null) this.id = UUID.randomUUID();
         else this.id = id;

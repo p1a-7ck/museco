@@ -18,6 +18,10 @@ public class Term {
         return beginDate;
     }
 
+    public void setBeginDate() {
+        this.setBeginDate(new Date());
+    }
+
     public void setBeginDate(Date beginDate) {
         if (beginDate == null)
             throw new IllegalArgumentException("Begin date should be defined");
@@ -28,6 +32,10 @@ public class Term {
 
     public Date getExpireDate() {
         return expireDate;
+    }
+
+    public void setExpireDate() {
+        this.setExpireDate(new Date());
     }
 
     public void setExpireDate(Date expireDate) {
@@ -57,5 +65,13 @@ public class Term {
         this.setBeginDate(term.getBeginDate());
         this.setExpireDate(term.getExpireDate());
         return this; // return Term for inline-code use
+    }
+
+    @Override
+    public String toString() {
+        return  "Term {" +
+                "beginDate=" + this.beginDate +
+                ", expireDate=" + this.expireDate +
+                "}";
     }
 }

@@ -1,20 +1,31 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.model.general.Term;
+import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
+import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
  * Municipal Service Company
  */
+@XmlRootElement(name = "position")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Position {
     private UUID id;
     private String name;
+    @XmlJavaTypeAdapter(MoneyAdapter.class)
     private Money salary;
+    @XmlJavaTypeAdapter(MoneyAdapter.class)
     private Money hourCost;
     private Term term = new Term();
+    @XmlJavaTypeAdapter(StaffAdapter.class)
     private Staff parentStaff;
 
     public Position() {
@@ -22,6 +33,10 @@ public class Position {
 
     public UUID getId() {
         return id;
+    }
+
+    public void setId() {
+        this.id = UUID.randomUUID();
     }
 
     public void setId(UUID id) {
@@ -48,7 +63,7 @@ public class Position {
     }
 
     public Money getSalary() {
-        return Money.of(this.salary.getCurrencyUnit(), this.salary.getAmount());
+        return this.salary; //Money.of(this.salary.getCurrencyUnit(), this.salary.getAmount());
     }
 
     public void setSalary(Money salary) {
@@ -58,7 +73,7 @@ public class Position {
     }
 
     public Money getHourCost() {
-        return Money.of(this.hourCost.getCurrencyUnit(), this.hourCost.getAmount());
+        return this.hourCost; //Money.of(this.hourCost.getCurrencyUnit(), this.hourCost.getAmount());
     }
 
     public void setHourCost(Money hourCost) {
@@ -85,5 +100,17 @@ public class Position {
         this.setTerm(position.getTerm());
         this.setParentStaff(position.getParentStaff());
         return this; // return Position for inline-code use
+    }
+
+    @Override
+    public String toString() {
+        return "Position {" +
+                "id=" + this.id +
+                ", name=" + this.name +
+                ", salary=" + this.salary +
+                ", hourCost=" + this.hourCost +
+                ", term=" + this.term +
+                ", parentStaff=" + this.parentStaff.getName() +
+                "}";
     }
 }
