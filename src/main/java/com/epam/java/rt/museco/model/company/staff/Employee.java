@@ -14,15 +14,15 @@ public class Employee extends Person {
     public Employee() {
     }
 
-    public Term getTerm() {
-        Term copyTerm = new Term();
-        return copyTerm.copyOf(this.term);
-    }
+//    public Term getTerm() {
+//        Term copyTerm = new Term();
+//        return copyTerm.copyOf(this.term);
+//    }
 
-    public void setTerm(Term term) {
-        // could be some checks
-        this.term.copyOf(term);
-    }
+//    public void setTerm(Term term) {
+//        // could be some checks
+//        this.term.copyOf(term);
+//    }
 
     public Position getPosition() {
         Position positionCopy = new Position();

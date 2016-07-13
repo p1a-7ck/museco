@@ -1,5 +1,4 @@
 .gitignore
 *.iml
 .idea/
-museco.iml
 target/

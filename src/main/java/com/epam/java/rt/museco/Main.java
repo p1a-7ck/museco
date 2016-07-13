@@ -25,7 +25,7 @@ public class Main {
         position.setHourCost(Money.of(CurrencyUnit.of("KZT"), 5000));
         Term term = new Term();
         term.setBeginDate();
-        position.setTerm(term);
+//        position.setTerm(term);
         // position.setParentStaff();
 
         staff.setName("BI-SERVICE");
@@ -36,6 +36,7 @@ public class Main {
         DataMarshaller dataMarshaller = new DataMarshaller();
         dataMarshaller.output(position);
 
+        dataMarshaller.output(staff);
 
     }
 }

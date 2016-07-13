@@ -1,5 +1,9 @@
 package com.epam.java.rt.museco.model.company.staff;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,12 +15,18 @@ import java.util.UUID;
  * position/employee/payroll/payment object to exclude mixin between different
  * staff-objects
  */
+@XmlRootElement(name = "staff")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Staff {
     private String name;
     private String detail;
+    @XmlElementWrapper
     private List<Position> positions = new ArrayList<Position>();
+    @XmlElementWrapper
     private List<Employee> employees = new ArrayList<Employee>();
+    @XmlElementWrapper
     private List<Payroll> payrolls = new ArrayList<Payroll>();
+    @XmlElementWrapper
     private List<Payment> payments = new ArrayList<Payment>();
 
     public Staff() {

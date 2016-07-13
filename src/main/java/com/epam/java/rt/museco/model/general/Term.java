@@ -4,49 +4,61 @@ import java.util.Date;
 
 /**
  * Municipal Service Company
- * Should be used to store begin and expire dates for entity, which could
- * be defined to date values that ensured begin date will before expire date.
+ * Should be used to store begin and expire dates for entity, which could be
+ * defined to date values that ensured begin date will not after expire date.
  */
-public class Term {
-    private Date beginDate;
-    private Date expireDate;
+public final class Term implements Termable, Copyable {
+    private final Date beginDate;
+    private final Date expireDate;
 
     public Term() {
+        this.beginDate = null;
+        this.expireDate = null;
+    }
+
+    public Term(Date beginDate, Date expireDate) {
+        if (beginDate == null && expireDate == null) {
+            this.beginDate = null;
+            this.expireDate = null;
+        } else {
+            if (beginDate == null) throw new IllegalArgumentException("Begin date should be defined first");
+            if (expireDate == null) {
+                this.beginDate = beginDate;
+                this.expireDate = null;
+            } else {
+                if (beginDate.after(expireDate))
+                    throw new IllegalArgumentException("Begin date should be before expire date");
+                this.beginDate = beginDate;
+                this.expireDate = expireDate;
+            }
+        }
     }
 
     public Date getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate() {
-        this.setBeginDate(new Date());
+    public Termable setBeginDate() {
+        return new Term(new Date(), this.getExpireDate());
     }
 
-    public void setBeginDate(Date beginDate) {
-        if (beginDate == null)
-            throw new IllegalArgumentException("Begin date should be defined");
-        else if (this.expireDate != null) if (!beginDate.before(this.expireDate))
-            throw new IllegalArgumentException("Begin date should be before expire date");
-        this.beginDate = beginDate;
+    public Termable setBeginDate(Date beginDate) {
+        return new Term(beginDate, this.getExpireDate());
     }
 
     public Date getExpireDate() {
         return expireDate;
     }
 
-    public void setExpireDate() {
-        this.setExpireDate(new Date());
+    public Termable setExpireDate() {
+        return new Term(this.getBeginDate(), new Date());
     }
 
-    public void setExpireDate(Date expireDate) {
-        if (this.beginDate == null)
-            throw new IllegalArgumentException("Begin date should be defined first");
-        else if (expireDate != null) if (!expireDate.after(this.beginDate))
-            throw new IllegalArgumentException("Expire date should be after begin date");
-        this.expireDate = expireDate;
+    public Termable setExpireDate(Date expireDate) {
+        return new Term(this.getBeginDate(), expireDate);
     }
 
-    public boolean isActive() {
+    public boolean withinDate() {
         Date currentDate = new Date();
         return this.beginDate != null &&
                 ((this.expireDate != null) ?
@@ -54,17 +66,17 @@ public class Term {
                         this.beginDate.before(currentDate));
     }
 
-    public boolean isActive(Date selectedDate) {
+    public boolean withinDate(Date checkDate) {
         return this.beginDate != null &&
                 ((this.expireDate != null) ?
-                        this.beginDate.before(selectedDate) && this.expireDate.after(selectedDate) :
-                        this.beginDate.before(selectedDate));
+                        this.beginDate.before(checkDate) && this.expireDate.after(checkDate) :
+                        this.beginDate.before(checkDate));
     }
 
-    public Term copyOf (Term term) {
-        this.setBeginDate(term.getBeginDate());
-        this.setExpireDate(term.getExpireDate());
-        return this; // return Term for inline-code use
+    public void copyOf(Object o) {
+        Termable anotherTerm = (Termable) o;
+        this.setBeginDate(anotherTerm.getBeginDate());
+        this.setExpireDate(anotherTerm.getExpireDate());
     }
 
     @Override

@@ -44,15 +44,15 @@ public class Position {
         else this.id = id;
     }
 
-    public Term getTerm() {
-        Term copyTerm = new Term();
-        return copyTerm.copyOf(this.term);
-    }
+//    public Term getTerm() {
+//        Term copyTerm = new Term();
+//        return copyTerm.copyOf(this.term);
+//    }
 
-    public void setTerm(Term term) {
-        // could be some checks
-        this.term.copyOf(term);
-    }
+//    public void setTerm(Term term) {
+//        // could be some checks
+//        this.term.copyOf(term);
+//    }
 
     public String getName() {
         return name;
@@ -97,7 +97,7 @@ public class Position {
         this.setName(position.getName());
         this.setSalary(position.getSalary());
         this.setHourCost(position.getHourCost());
-        this.setTerm(position.getTerm());
+//        this.setTerm(position.getTerm());
         this.setParentStaff(position.getParentStaff());
         return this; // return Position for inline-code use
     }
