@@ -38,6 +38,7 @@ public class PositionTest {
         position.setId();
         assertNotNull(position.getId());
         UUID id = UUID.randomUUID();
+        position = new Position();
         position.setId(id);
         assertEquals(id, position.getId());
     }
@@ -133,6 +134,64 @@ public class PositionTest {
         Main.LOGGER.trace("position.setParentRootStaff(null)");
         position.setParentRootStaff(rootStaff);
         assertNull(position.getParentRootStaff());
+    }
+
+    @Test
+    public void updatePositionTest() {
+        Main.LOGGER.trace(".updatePOsitionTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getParentRootStaff());
+        position.setId();
+        RootStaff rootStaff = new RootStaff();
+        rootStaff.addPosition(position);
+        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
+        position = rootStaff.getPosition(position.getId());
+        position.setName("RENAMED");
+        assertNotEquals(position.getName(), rootStaff.getPosition(position.getId()).getName());
+        position.updatePosition();
+        Main.LOGGER.trace("position.getName() = {}", position.getName());
+        assertEquals(position.getName(), rootStaff.getPosition(position.getId()).getName());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void setGetParentRootStaffExceptionTest() {
+        Main.LOGGER.trace(".setGetParentRootStaffExceptionTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getParentRootStaff());
+        position.setId();
+        RootStaff rootStaff = new RootStaff();
+        rootStaff.addPosition(position);
+        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+        position.setParentRootStaff(rootStaff);
+        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
+        assertEquals(rootStaff, position.getParentRootStaff());
+//        rootStaff.removePosition(position.getId()); // this line commented in an effort to result ISE
+        rootStaff = null;
+        Main.LOGGER.trace("position.setParentRootStaff(null)");
+        position.setParentRootStaff(rootStaff); // here should be IllegalStateException
+    }
+
+    @Test
+    public void positionImmutabilityTest() {
+        Main.LOGGER.trace(".positionImmutabilityTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        position.setId();
+        position.setName("POSITION");
+        Main.LOGGER.trace("position={}", position);
+        RootStaff rootStaff = new RootStaff();
+        rootStaff.addPosition(position);
+        Position positionFromRootStaff = rootStaff.getPosition(position.getId());
+        positionFromRootStaff.setName("FROMROOTSTAFF");
+        Main.LOGGER.trace("positionFromRootStaff.getName()={}", positionFromRootStaff.getName());
+        assertNotEquals(positionFromRootStaff.getName(), rootStaff.getPosition(position.getId()).getName());
+        UUID id = position.getId();
+        positionFromRootStaff = null;
+        position = null;
+        Main.LOGGER.trace("rootStaff.getPosition({}) = {}", id, rootStaff.getPosition(id));
     }
 
 }

@@ -1,6 +1,7 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.Main;
+import com.epam.java.rt.museco.model.company.RootCompany;
 import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
 import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
@@ -18,7 +19,7 @@ import java.util.UUID;
  */
 @XmlRootElement(name = "position")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Position {
+public final class Position {
     private UUID id;
     private String name;
     @XmlJavaTypeAdapter(MoneyAdapter.class)
@@ -38,10 +39,12 @@ public class Position {
     }
 
     public void setId() {
+        if (this.id != null) throw new IllegalStateException("Id already set");
         this.id = UUID.randomUUID();
     }
 
     public void setId(UUID id) {
+        if (this.id != null) throw new IllegalStateException("Id already set");
         if (id == null) this.id = UUID.randomUUID();
         else this.id = id;
     }
@@ -127,21 +130,49 @@ public class Position {
         Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
         if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
             if (this.parentRootStaff != null) if (this.parentRootStaff.getPosition(this.id) != null)
-                throw new IllegalStateException("Position-item exist in staff-aggregator");
+                throw new IllegalStateException("Position-item exist in '" + this.parentRootStaff.getName() + "' staff-aggregator");
             if (parentRootStaff != null) if (parentRootStaff.getPosition(this.id) == null)
-                throw new IllegalStateException("Position-item not exist in staff-aggregator");
+                throw new IllegalStateException("Position-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
             this.parentRootStaff = parentRootStaff;
         }
     }
 
+    public void updatePosition() {
+        if (this.parentRootStaff == null) throw new IllegalStateException("Position have no staff-aggregator");
+        this.parentRootStaff.updatePosition(this);
+    }
+
     public void copyOf(Position position) {
-        this.setId(position.getId());
-        this.setName(position.getName());
-        this.setSalary(position.getSalary());
-        this.setHourCost(position.getHourCost());
-        this.setCreateDate(position.getCreateDate());
-        this.setExpireDate(position.getExpireDate());
-//        this.setParentRootStaff(position.getParentRootStaff());
+//        this.setId(position.getId());
+//        this.setName(position.getName());
+//        this.setSalary(position.getSalary());
+//        this.setHourCost(position.getHourCost());
+//        this.setCreateDate(position.getCreateDate());
+//        this.setExpireDate(position.getExpireDate());
+//        this.setExpireDate(position.getExpireDate());
+        this.id = position.id;
+        this.name = position.name;
+        this.salary = position.salary;
+        this.hourCost = position.hourCost;
+        this.createDate = position.createDate;
+        this.expireDate = position.expireDate;
+        this.parentRootStaff = position.parentRootStaff;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Position position = (Position) o;
+
+        return id != null ? id.equals(position.id) : null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

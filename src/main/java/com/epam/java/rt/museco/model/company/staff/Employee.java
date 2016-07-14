@@ -1,27 +1,19 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.model.general.BasePerson;
+import org.joda.time.DateTime;
 
 /**
  * Municipal Service Company
  */
-public class Employee extends BasePerson {
+public final class Employee extends BasePerson {
     private Position position;
-//    private Term term = new Term();
-private RootStaff parentRootStaff;
+    private DateTime createDate;
+    private DateTime expireDate;
+    private RootStaff parentRootStaff;
 
     public Employee() {
     }
-
-//    public Term getTerm() {
-//        Term copyTerm = new Term();
-//        return copyTerm.copyOf(this.term);
-//    }
-
-//    public void setTerm(Term term) {
-//        // could be some checks
-//        this.term.copyOf(term);
-//    }
 
     public Position getPosition() {
         Position positionCopy = new Position();

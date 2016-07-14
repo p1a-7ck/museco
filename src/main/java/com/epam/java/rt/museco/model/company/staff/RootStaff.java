@@ -50,18 +50,22 @@ public class RootStaff {
         this.detail = detail;
     }
 
-    public void addPosition(Position position) {
-        Main.LOGGER.trace(".addPosition({})", position);
-        Position newPosition = new Position();
-        newPosition.copyOf(position);
-        this.positions.add(newPosition);
-        newPosition.setParentRootStaff(this);
+    public void addPosition(Position sourcePosition) {
+        Main.LOGGER.trace(".addPosition({})", sourcePosition);
+        Position position = new Position();
+        position.copyOf(sourcePosition);
+        this.positions.add(position);
+        Main.LOGGER.trace("(!) position.setParentRootStaff({})", this);
+        position.setParentRootStaff(this);
     }
 
     public Position getPosition(UUID id) {
         for (Position position : this.positions)
-            if (position.getId().equals(id))
-                return position;
+            if (position.getId().equals(id)) {
+                Position resultPosition = new Position();
+                resultPosition.copyOf(position);
+                return resultPosition;
+            }
         return null;
     }
 
@@ -71,6 +75,18 @@ public class RootStaff {
                 positions.remove(position);
                 break;
             }
+    }
+
+    public void updatePosition(Position sourcePosition) {
+        Main.LOGGER.trace("updatePosition({}).getName() = {}", sourcePosition, sourcePosition.getName());
+        Position foundPosition = null;
+        for (Position position : this.positions)
+            if (position.getId().equals(sourcePosition.getId())) {
+                foundPosition = position;
+                break;
+            }
+        if (foundPosition == null) throw new IllegalStateException("Position-item not exist in '" + this.name + "' staff-aggregator");
+        foundPosition.copyOf(sourcePosition);
     }
 
     public boolean isChildEmployee(UUID id) {
