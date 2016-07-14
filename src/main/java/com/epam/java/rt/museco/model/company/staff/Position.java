@@ -143,13 +143,6 @@ public final class Position {
     }
 
     public void copyOf(Position position) {
-//        this.setId(position.getId());
-//        this.setName(position.getName());
-//        this.setSalary(position.getSalary());
-//        this.setHourCost(position.getHourCost());
-//        this.setCreateDate(position.getCreateDate());
-//        this.setExpireDate(position.getExpireDate());
-//        this.setExpireDate(position.getExpireDate());
         this.id = position.id;
         this.name = position.name;
         this.salary = position.salary;
@@ -166,13 +159,13 @@ public final class Position {
 
         Position position = (Position) o;
 
-        return id != null ? id.equals(position.id) : null;
+        return this.id != null ? this.id.equals(position.id) : null;
 
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return this.id != null ? this.id.hashCode() : 0;
     }
 
     @Override

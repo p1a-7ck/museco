@@ -1,12 +1,16 @@
 package com.epam.java.rt.museco.model.company.staff;
 
+import com.epam.java.rt.museco.Main;
 import com.epam.java.rt.museco.model.general.BasePerson;
 import org.joda.time.DateTime;
+
+import java.util.UUID;
 
 /**
  * Municipal Service Company
  */
 public final class Employee extends BasePerson {
+    private UUID id;
     private Position position;
     private DateTime createDate;
     private DateTime expireDate;
@@ -15,17 +19,62 @@ public final class Employee extends BasePerson {
     public Employee() {
     }
 
-    public Position getPosition() {
-        Position positionCopy = new Position();
-        positionCopy.copyOf(this.position);
-        return positionCopy;
+    public UUID getId() {
+        return id;
     }
 
-    public void setPosition(Position position) {
-        if (this.parentRootStaff != null)
-            if (this.parentRootStaff.getPosition(position.getId()) == null) // Employee and position should parented by one staff-object
-            throw new IllegalArgumentException("There are no selected position-object in staff-object aggregator");
-        this.position = position;
+    public void setId() {
+        if (this.id != null) throw new IllegalStateException("Id already set");
+        this.id = UUID.randomUUID();
+    }
+
+    public void setId(UUID id) {
+        if (this.id != null) throw new IllegalStateException("Id already set");
+        if (id == null) this.id = UUID.randomUUID();
+        else this.id = id;
+    }
+
+    public boolean isWithinCreateAndExpireDatesNow() {
+        return isWithinCreateAndExpireDates(new DateTime());
+    }
+
+    public boolean isWithinCreateAndExpireDates(DateTime checkDate) {
+        return !(checkDate == null || this.createDate == null) &&
+                (this.expireDate == null ? !this.createDate.isAfter(checkDate) :
+                        this.expireDate.isAfter(checkDate) && !this.createDate.isAfter(checkDate));
+    }
+
+    private boolean isAcceptableCreateAndExpireDates(DateTime createDate, DateTime expireDate) {
+        return (createDate == null && expireDate == null) || (createDate != null && expireDate == null) ||
+                (createDate != null && !createDate.isAfter(expireDate));
+    }
+
+    public DateTime getCreateDate() {
+        return this.createDate;
+    }
+
+    public void setCreateDateNow() {
+        this.setCreateDate(new DateTime());
+    }
+
+    public void setCreateDate(DateTime createDate) {
+        if (!isAcceptableCreateAndExpireDates(createDate, this.expireDate))
+            throw new IllegalArgumentException("Begin date should be before or equal expire date");
+        this.createDate = createDate;
+    }
+
+    public DateTime getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDateNow() {
+        this.setExpireDate(new DateTime());
+    }
+
+    public void setExpireDate(DateTime expireDate) {
+        if (!isAcceptableCreateAndExpireDates(createDate, this.expireDate))
+            throw new IllegalArgumentException("Begin date should be defined first and should be before or equal expire date");
+        this.expireDate = expireDate;
     }
 
     public RootStaff getParentRootStaff() {
@@ -33,9 +82,53 @@ public final class Employee extends BasePerson {
     }
 
     public void setParentRootStaff(RootStaff parentRootStaff) {
-        if (this.parentRootStaff != null)
-            if (!parentRootStaff.isChildEmployee(super.getId())) // Employee should parented by stored staff-object
-            throw new IllegalArgumentException("There are no current employee-object in staff-object aggregator");
-        this.parentRootStaff = parentRootStaff;
+        Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
+        if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
+            if (this.parentRootStaff != null) if (this.parentRootStaff.getEmployee(this.id) != null)
+                throw new IllegalStateException("Employee-item exist in '" + this.parentRootStaff.getName() + "' staff-aggregator");
+            if (parentRootStaff != null) if (parentRootStaff.getEmployee(this.id) == null)
+                throw new IllegalStateException("Employee-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
+            this.parentRootStaff = parentRootStaff;
+        }
+    }
+
+    public void updateEmployee() {
+        if (this.parentRootStaff == null) throw new IllegalStateException("Employee have no staff-aggregator");
+        this.parentRootStaff.updateEmployee(this);
+    }
+
+    public void copyOf(Employee employee) {
+        Main.LOGGER.trace(".copyOf({})", employee);
+        this.id = employee.id;
+        super.setFirstName(employee.getFirstName());
+        super.setLastName(employee.getLastName());
+        super.setMiddleName(employee.getMiddleName());
+        this.position = employee.position;
+        this.createDate = employee.createDate;
+        this.expireDate = employee.expireDate;
+        this.parentRootStaff = employee.parentRootStaff;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Employee employee = (Employee) o;
+
+        return this.id != null ? this.id.equals(employee.id) : null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id != null ? this.id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee {" +
+                "id=" + this.id +
+                "}";
     }
 }

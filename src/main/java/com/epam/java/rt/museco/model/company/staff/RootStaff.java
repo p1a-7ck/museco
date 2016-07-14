@@ -20,6 +20,7 @@ import java.util.UUID;
 @XmlRootElement(name = "staff")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RootStaff {
+    private UUID id;
     private String name;
     private String detail;
     @XmlElementWrapper
@@ -32,6 +33,21 @@ public class RootStaff {
     private List<Payment> payments = new ArrayList<Payment>();
 
     public RootStaff() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId() {
+        if (this.id != null) throw new IllegalStateException("Id already set");
+        this.id = UUID.randomUUID();
+    }
+
+    public void setId(UUID id) {
+        if (this.id != null) throw new IllegalStateException("Id already set");
+        if (id == null) this.id = UUID.randomUUID();
+        else this.id = id;
     }
 
     public String getName() {
@@ -89,22 +105,65 @@ public class RootStaff {
         foundPosition.copyOf(sourcePosition);
     }
 
-    public boolean isChildEmployee(UUID id) {
+    public void addEmployee(Employee sourceEmployee) {
+        Main.LOGGER.trace(".addEmployee({})", sourceEmployee);
+        Employee employee = new Employee();
+        employee.copyOf(sourceEmployee);
+        this.employees.add(employee);
+        Main.LOGGER.trace("(!) employee.setParentRootStaff({})", this);
+        employee.setParentRootStaff(this);
+    }
+
+    public Employee getEmployee(UUID id) {
         for (Employee employee : this.employees)
-            if (employee.getId().equals(id))
-                return true;
-        return false;
+            if (employee.getId().equals(id)) {
+                Employee resultEmployee = new Employee();
+                resultEmployee.copyOf(employee);
+                return resultEmployee;
+            }
+        return null;
+    }
+
+    public void removeEmployee(UUID id) {
+        for (Employee employee : this.employees)
+            if (employee.getId().equals(id)) {
+                employees.remove(employee);
+                break;
+            }
+    }
+
+    public void updateEmployee(Employee sourceEmployee) {
+        Main.LOGGER.trace("updateEmployee({}).getFullName() = {}", sourceEmployee, sourceEmployee.getFullName());
+        Employee foundEmployee = null;
+        for (Employee employee : this.employees)
+            if (employee.getId().equals(sourceEmployee.getId())) {
+                foundEmployee = employee;
+                break;
+            }
+        if (foundEmployee == null) throw new IllegalStateException("Employee-item not exist in '" + this.name + "' staff-aggregator");
+        foundEmployee.copyOf(sourceEmployee);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RootStaff rootStaff = (RootStaff) o;
+
+        return this.id != null ? this.id.equals(rootStaff.id) : null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id != null ? this.id.hashCode() : 0;
     }
 
     @Override
     public String toString() {
         return "RootStaff {" +
-                "name=" + this.name +
-                ", detail=" + this.detail +
-                ", positions=" + this.positions +
-                ", employees=" +
-                ", payrolls=" +
-                ", payments=" +
+                "id=" + this.id +
                 "}";
     }
 }

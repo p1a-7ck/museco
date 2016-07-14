@@ -1,15 +1,12 @@
 package com.epam.java.rt.museco.model.general;
 
-import java.util.UUID;
-
 /**
  * Municipal Service Company
  * Should be used as a base class for child entities, which should store
  * first name, last name and middle name, and should return concatenated
  * name value
  */
-public class BasePerson {
-    private UUID id;
+public abstract class BasePerson {
     private String firstName;
     private String lastName;
     private String middleName;
@@ -17,25 +14,13 @@ public class BasePerson {
     public BasePerson() {
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId() {
-        this.id = UUID.randomUUID();
-    }
-
-    public void setId(UUID id) {
-        if (id == null) this.id = UUID.randomUUID();
-        else this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName.trim();
+        if (firstName == null) this.firstName = null;
+        else this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -43,7 +28,8 @@ public class BasePerson {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName.trim();
+        if (lastName == null) this.lastName = null;
+        else this.lastName = lastName.trim();
     }
 
     public String getMiddleName() {
@@ -51,7 +37,8 @@ public class BasePerson {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName.trim();
+        if (middleName == null) this.middleName = null;
+        else this.middleName = middleName.trim();
     }
 
     public String getShortName() {
