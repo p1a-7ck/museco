@@ -1,8 +1,6 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.Main;
-import org.joda.money.CurrencyUnit;
-import org.joda.money.Money;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -134,12 +132,9 @@ public class EmployeeTest {
         rootStaff.addEmployee(employee);
         Main.LOGGER.trace("rootStaff.addEmployee({})", employee);
         Main.LOGGER.trace("employee.setParentRootStaff({})", rootStaff);
-        employee = rootStaff.getEmployee(employee.getId());
+        employee = rootStaff.getEmployeeCopy(employee.getId());
         employee.setFirstName("RENAMED");
-        assertNotEquals(employee.getFirstName(), rootStaff.getEmployee(employee.getId()).getFirstName());
-        employee.updateEmployee();
-        Main.LOGGER.trace("employee.getName() = {}", employee.getFirstName());
-        assertEquals(employee.getFirstName(), rootStaff.getEmployee(employee.getId()).getFirstName());
+        assertEquals(employee, rootStaff.getEmployeeCopy(employee.getId()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -160,25 +155,5 @@ public class EmployeeTest {
         Main.LOGGER.trace("employee.setParentRootStaff(null)");
         employee.setParentRootStaff(rootStaff); // here should be IllegalStateException
     }
-
-    @Test
-    public void employeeImmutabilityTest() {
-        Main.LOGGER.trace(".employeeImmutabilityTest()");
-        Employee employee = new Employee();
-        assertNotNull(employee);
-        employee.setId();
-        employee.setFirstName("POSITION");
-        Main.LOGGER.trace("employee={}", employee);
-        RootStaff rootStaff = new RootStaff();
-        rootStaff.addEmployee(employee);
-        Employee employeeFromRootStaff = rootStaff.getEmployee(employee.getId());
-        employeeFromRootStaff.setFirstName("FROMROOTSTAFF");
-        Main.LOGGER.trace("employeeFromRootStaff.getName()={}", employeeFromRootStaff.getFirstName());
-        assertNotEquals(employeeFromRootStaff.getFirstName(), rootStaff.getEmployee(employee.getId()).getFirstName());
-        UUID id = employee.getId();
-        employeeFromRootStaff = null;
-        employee = null;
-        Main.LOGGER.trace("rootStaff.getEmployee({}) = {}", id, rootStaff.getEmployee(id));
-    }
-
+    
 }

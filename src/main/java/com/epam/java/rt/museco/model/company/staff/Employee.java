@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Municipal Service Company
  */
-public final class Employee extends BasePerson {
+public class Employee extends BasePerson {
     private UUID id;
     private Position position;
     private DateTime createDate;
@@ -84,17 +84,12 @@ public final class Employee extends BasePerson {
     public void setParentRootStaff(RootStaff parentRootStaff) {
         Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
         if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
-            if (this.parentRootStaff != null) if (this.parentRootStaff.getEmployee(this.id) != null)
+            if (this.parentRootStaff != null) if (this.parentRootStaff.getEmployeeCopy(this.id) != null)
                 throw new IllegalStateException("Employee-item exist in '" + this.parentRootStaff.getName() + "' staff-aggregator");
-            if (parentRootStaff != null) if (parentRootStaff.getEmployee(this.id) == null)
+            if (parentRootStaff != null) if (parentRootStaff.getEmployeeCopy(this.id) == null)
                 throw new IllegalStateException("Employee-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
             this.parentRootStaff = parentRootStaff;
         }
-    }
-
-    public void updateEmployee() {
-        if (this.parentRootStaff == null) throw new IllegalStateException("Employee have no staff-aggregator");
-        this.parentRootStaff.updateEmployee(this);
     }
 
     public void copyOf(Employee employee) {

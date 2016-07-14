@@ -6,9 +6,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Municipal Service Company
@@ -24,9 +22,9 @@ public class RootStaff {
     private String name;
     private String detail;
     @XmlElementWrapper
-    private List<Position> positions = new ArrayList<Position>();
+    private Map<UUID, Position> positions = new HashMap<UUID, Position>();
     @XmlElementWrapper
-    private List<Employee> employees = new ArrayList<Employee>();
+    private Map<UUID, Employee> employees = new HashMap<UUID, Employee>();
     @XmlElementWrapper
     private List<Payroll> payrolls = new ArrayList<Payroll>();
     @XmlElementWrapper
@@ -66,82 +64,30 @@ public class RootStaff {
         this.detail = detail;
     }
 
-    public void addPosition(Position sourcePosition) {
-        Main.LOGGER.trace(".addPosition({})", sourcePosition);
-        Position position = new Position();
-        position.copyOf(sourcePosition);
-        this.positions.add(position);
-        Main.LOGGER.trace("(!) position.setParentRootStaff({})", this);
+    public void addPosition(Position position) {
+        this.positions.put(position.getId(), position);
         position.setParentRootStaff(this);
     }
 
     public Position getPosition(UUID id) {
-        for (Position position : this.positions)
-            if (position.getId().equals(id)) {
-                Position resultPosition = new Position();
-                resultPosition.copyOf(position);
-                return resultPosition;
-            }
-        return null;
+        return this.positions.get(id);
     }
 
     public void removePosition(UUID id) {
-        for (Position position : this.positions)
-            if (position.getId().equals(id)) {
-                positions.remove(position);
-                break;
-            }
+        this.positions.remove(id);
     }
 
-    public void updatePosition(Position sourcePosition) {
-        Main.LOGGER.trace("updatePosition({}).getName() = {}", sourcePosition, sourcePosition.getName());
-        Position foundPosition = null;
-        for (Position position : this.positions)
-            if (position.getId().equals(sourcePosition.getId())) {
-                foundPosition = position;
-                break;
-            }
-        if (foundPosition == null) throw new IllegalStateException("Position-item not exist in '" + this.name + "' staff-aggregator");
-        foundPosition.copyOf(sourcePosition);
-    }
-
-    public void addEmployee(Employee sourceEmployee) {
-        Main.LOGGER.trace(".addEmployee({})", sourceEmployee);
-        Employee employee = new Employee();
-        employee.copyOf(sourceEmployee);
-        this.employees.add(employee);
-        Main.LOGGER.trace("(!) employee.setParentRootStaff({})", this);
+    public void addEmployee(Employee employee) {
+        this.employees.put(employee.getId(), employee);
         employee.setParentRootStaff(this);
     }
 
-    public Employee getEmployee(UUID id) {
-        for (Employee employee : this.employees)
-            if (employee.getId().equals(id)) {
-                Employee resultEmployee = new Employee();
-                resultEmployee.copyOf(employee);
-                return resultEmployee;
-            }
-        return null;
+    public Employee getEmployeeCopy(UUID id) {
+        return this.employees.get(id);
     }
 
     public void removeEmployee(UUID id) {
-        for (Employee employee : this.employees)
-            if (employee.getId().equals(id)) {
-                employees.remove(employee);
-                break;
-            }
-    }
-
-    public void updateEmployee(Employee sourceEmployee) {
-        Main.LOGGER.trace("updateEmployee({}).getFullName() = {}", sourceEmployee, sourceEmployee.getFullName());
-        Employee foundEmployee = null;
-        for (Employee employee : this.employees)
-            if (employee.getId().equals(sourceEmployee.getId())) {
-                foundEmployee = employee;
-                break;
-            }
-        if (foundEmployee == null) throw new IllegalStateException("Employee-item not exist in '" + this.name + "' staff-aggregator");
-        foundEmployee.copyOf(sourceEmployee);
+        this.employees.remove(id);
     }
 
     @Override

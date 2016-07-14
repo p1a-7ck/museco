@@ -1,7 +1,6 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.Main;
-import com.epam.java.rt.museco.model.company.RootCompany;
 import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
 import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
@@ -19,7 +18,7 @@ import java.util.UUID;
  */
 @XmlRootElement(name = "position")
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Position {
+public class Position {
     private UUID id;
     private String name;
     @XmlJavaTypeAdapter(MoneyAdapter.class)
@@ -135,11 +134,6 @@ public final class Position {
                 throw new IllegalStateException("Position-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
             this.parentRootStaff = parentRootStaff;
         }
-    }
-
-    public void updatePosition() {
-        if (this.parentRootStaff == null) throw new IllegalStateException("Position have no staff-aggregator");
-        this.parentRootStaff.updatePosition(this);
     }
 
     public void copyOf(Position position) {
