@@ -26,7 +26,7 @@ public class PositionTest {
         assertNull(position.getHourCost());
         assertNull(position.getCreateDate());
         assertNull(position.getExpireDate());
-        assertNull(position.getParentRootStaff());
+        assertNull(position.getRootStaff());
     }
 
     @Test
@@ -121,19 +121,19 @@ public class PositionTest {
         Main.LOGGER.trace(".setGetParentRootStaffTest()");
         Position position = new Position();
         assertNotNull(position);
-        assertNull(position.getParentRootStaff());
+        assertNull(position.getRootStaff());
         position.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addPosition(position);
         Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        position.setParentRootStaff(rootStaff);
-        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
-        assertEquals(rootStaff, position.getParentRootStaff());
+        position.setRootStaff(rootStaff);
+        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
+        assertEquals(rootStaff, position.getRootStaff());
         rootStaff.removePosition(position.getId());
         rootStaff = null;
-        Main.LOGGER.trace("position.setParentRootStaff(null)");
-        position.setParentRootStaff(rootStaff);
-        assertNull(position.getParentRootStaff());
+        Main.LOGGER.trace("position.setRootStaff(null)");
+        position.setRootStaff(rootStaff);
+        assertNull(position.getRootStaff());
     }
 
     @Test
@@ -141,12 +141,12 @@ public class PositionTest {
         Main.LOGGER.trace(".updatePOsitionTest()");
         Position position = new Position();
         assertNotNull(position);
-        assertNull(position.getParentRootStaff());
+        assertNull(position.getRootStaff());
         position.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addPosition(position);
         Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
+        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
         position = rootStaff.getPosition(position.getId());
         position.setName("RENAMED");
         assertEquals(position, rootStaff.getPosition(position.getId()));
@@ -157,18 +157,18 @@ public class PositionTest {
         Main.LOGGER.trace(".setGetParentRootStaffExceptionTest()");
         Position position = new Position();
         assertNotNull(position);
-        assertNull(position.getParentRootStaff());
+        assertNull(position.getRootStaff());
         position.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addPosition(position);
         Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        position.setParentRootStaff(rootStaff);
-        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
-        assertEquals(rootStaff, position.getParentRootStaff());
+        position.setRootStaff(rootStaff);
+        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
+        assertEquals(rootStaff, position.getRootStaff());
 //        rootStaff.removePosition(position.getId()); // this line commented in an effort to result ISE
         rootStaff = null;
-        Main.LOGGER.trace("position.setParentRootStaff(null)");
-        position.setParentRootStaff(rootStaff); // here should be IllegalStateException
+        Main.LOGGER.trace("position.setRootStaff(null)");
+        position.setRootStaff(rootStaff); // here should be IllegalStateException
     }
 
 }

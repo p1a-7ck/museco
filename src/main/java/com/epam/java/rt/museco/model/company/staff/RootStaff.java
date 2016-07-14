@@ -1,7 +1,5 @@
 package com.epam.java.rt.museco.model.company.staff;
 
-import com.epam.java.rt.museco.Main;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -26,9 +24,9 @@ public class RootStaff {
     @XmlElementWrapper
     private Map<UUID, Employee> employees = new HashMap<UUID, Employee>();
     @XmlElementWrapper
-    private List<Payroll> payrolls = new ArrayList<Payroll>();
+    private Map<UUID, Payroll> payrolls = new HashMap<UUID, Payroll>();
     @XmlElementWrapper
-    private List<Payment> payments = new ArrayList<Payment>();
+    private Map<UUID, Payment> payments = new HashMap<UUID, Payment>();
 
     public RootStaff() {
     }
@@ -66,7 +64,7 @@ public class RootStaff {
 
     public void addPosition(Position position) {
         this.positions.put(position.getId(), position);
-        position.setParentRootStaff(this);
+        position.setRootStaff(this);
     }
 
     public Position getPosition(UUID id) {
@@ -79,15 +77,41 @@ public class RootStaff {
 
     public void addEmployee(Employee employee) {
         this.employees.put(employee.getId(), employee);
-        employee.setParentRootStaff(this);
+        employee.setRootStaff(this);
     }
 
-    public Employee getEmployeeCopy(UUID id) {
+    public Employee getEmployee(UUID id) {
         return this.employees.get(id);
     }
 
     public void removeEmployee(UUID id) {
         this.employees.remove(id);
+    }
+
+    public void addPayroll(Payroll payroll) {
+        this.payrolls.put(payroll.getId(), payroll);
+        payroll.setRootStaff(this);
+    }
+
+    public Payroll getPayroll(UUID id) {
+        return this.payrolls.get(id);
+    }
+
+    public void removePayroll(UUID id) {
+        this.payrolls.remove(id);
+    }
+
+    public void addPayment(Payment payment) {
+        this.payments.put(payment.getId(), payment);
+        payment.setRootStaff(this);
+    }
+
+    public Payment getPayment(UUID id) {
+        return this.payments.get(id);
+    }
+
+    public void removePayment(UUID id) {
+        this.payments.remove(id);
     }
 
     @Override

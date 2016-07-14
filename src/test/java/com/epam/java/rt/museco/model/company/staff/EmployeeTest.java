@@ -26,7 +26,7 @@ public class EmployeeTest {
         assertNull(employee.getShortName());
         assertNull(employee.getCreateDate());
         assertNull(employee.getExpireDate());
-        assertNull(employee.getParentRootStaff());
+        assertNull(employee.getRootStaff());
     }
 
     @Test
@@ -106,19 +106,19 @@ public class EmployeeTest {
         Main.LOGGER.trace(".setGetParentRootStaffTest()");
         Employee employee = new Employee();
         assertNotNull(employee);
-        assertNull(employee.getParentRootStaff());
+        assertNull(employee.getRootStaff());
         employee.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addEmployee(employee);
         Main.LOGGER.trace("rootStaff.addEmployee({})", employee);
-        employee.setParentRootStaff(rootStaff);
-        Main.LOGGER.trace("employee.setParentRootStaff({})", rootStaff);
-        assertEquals(rootStaff, employee.getParentRootStaff());
+        employee.setRootStaff(rootStaff);
+        Main.LOGGER.trace("employee.setRootStaff({})", rootStaff);
+        assertEquals(rootStaff, employee.getRootStaff());
         rootStaff.removeEmployee(employee.getId());
         rootStaff = null;
-        Main.LOGGER.trace("employee.setParentRootStaff(null)");
-        employee.setParentRootStaff(rootStaff);
-        assertNull(employee.getParentRootStaff());
+        Main.LOGGER.trace("employee.setRootStaff(null)");
+        employee.setRootStaff(rootStaff);
+        assertNull(employee.getRootStaff());
     }
 
     @Test
@@ -126,15 +126,15 @@ public class EmployeeTest {
         Main.LOGGER.trace(".updatePOsitionTest()");
         Employee employee = new Employee();
         assertNotNull(employee);
-        assertNull(employee.getParentRootStaff());
+        assertNull(employee.getRootStaff());
         employee.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addEmployee(employee);
         Main.LOGGER.trace("rootStaff.addEmployee({})", employee);
-        Main.LOGGER.trace("employee.setParentRootStaff({})", rootStaff);
-        employee = rootStaff.getEmployeeCopy(employee.getId());
+        Main.LOGGER.trace("employee.setRootStaff({})", rootStaff);
+        employee = rootStaff.getEmployee(employee.getId());
         employee.setFirstName("RENAMED");
-        assertEquals(employee, rootStaff.getEmployeeCopy(employee.getId()));
+        assertEquals(employee, rootStaff.getEmployee(employee.getId()));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -142,18 +142,18 @@ public class EmployeeTest {
         Main.LOGGER.trace(".setGetParentRootStaffExceptionTest()");
         Employee employee = new Employee();
         assertNotNull(employee);
-        assertNull(employee.getParentRootStaff());
+        assertNull(employee.getRootStaff());
         employee.setId();
         RootStaff rootStaff = new RootStaff();
         rootStaff.addEmployee(employee);
         Main.LOGGER.trace("rootStaff.addEmployee({})", employee);
-        employee.setParentRootStaff(rootStaff);
-        Main.LOGGER.trace("employee.setParentRootStaff({})", rootStaff);
-        assertEquals(rootStaff, employee.getParentRootStaff());
+        employee.setRootStaff(rootStaff);
+        Main.LOGGER.trace("employee.setRootStaff({})", rootStaff);
+        assertEquals(rootStaff, employee.getRootStaff());
 //        rootStaff.removeEmployee(employee.getId()); // this line commented in an effort to result ISE
         rootStaff = null;
-        Main.LOGGER.trace("employee.setParentRootStaff(null)");
-        employee.setParentRootStaff(rootStaff); // here should be IllegalStateException
+        Main.LOGGER.trace("employee.setRootStaff(null)");
+        employee.setRootStaff(rootStaff); // here should be IllegalStateException
     }
-    
+
 }

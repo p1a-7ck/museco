@@ -14,7 +14,7 @@ public class Employee extends BasePerson {
     private Position position;
     private DateTime createDate;
     private DateTime expireDate;
-    private RootStaff parentRootStaff;
+    private RootStaff rootStaff;
 
     public Employee() {
     }
@@ -32,6 +32,20 @@ public class Employee extends BasePerson {
         if (this.id != null) throw new IllegalStateException("Id already set");
         if (id == null) this.id = UUID.randomUUID();
         else this.id = id;
+    }
+
+    public Position getPosition() {
+        return this.position;
+    }
+
+    public void setPosition(Position position) {
+        if (position != null) {
+            if (this.rootStaff == null || !this.rootStaff.equals(position.getRootStaff()))
+                throw new IllegalStateException("There are no staff-aggregator or position have another staff-aggregator");
+            if (this.rootStaff.getPosition(position.getId()) == null)
+                throw new IllegalStateException("There are no position in staff-aggregator");
+        }
+        this.position = position;
     }
 
     public boolean isWithinCreateAndExpireDatesNow() {
@@ -77,18 +91,18 @@ public class Employee extends BasePerson {
         this.expireDate = expireDate;
     }
 
-    public RootStaff getParentRootStaff() {
-        return parentRootStaff;
+    public RootStaff getRootStaff() {
+        return this.rootStaff;
     }
 
-    public void setParentRootStaff(RootStaff parentRootStaff) {
-        Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
-        if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
-            if (this.parentRootStaff != null) if (this.parentRootStaff.getEmployeeCopy(this.id) != null)
-                throw new IllegalStateException("Employee-item exist in '" + this.parentRootStaff.getName() + "' staff-aggregator");
-            if (parentRootStaff != null) if (parentRootStaff.getEmployeeCopy(this.id) == null)
-                throw new IllegalStateException("Employee-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
-            this.parentRootStaff = parentRootStaff;
+    public void setRootStaff(RootStaff rootStaff) {
+        Main.LOGGER.trace(".setRootStaff({})", rootStaff);
+        if (this.rootStaff == null || !this.rootStaff.equals(rootStaff)) {
+            if (this.rootStaff != null) if (this.rootStaff.getEmployee(this.id) != null)
+                throw new IllegalStateException("Employee-item exist in '" + this.rootStaff.getName() + "' staff-aggregator");
+            if (rootStaff != null) if (rootStaff.getEmployee(this.id) == null)
+                throw new IllegalStateException("Employee-item not exist in '" + rootStaff.getName() + "' staff-aggregator");
+            this.rootStaff = rootStaff;
         }
     }
 
@@ -101,7 +115,7 @@ public class Employee extends BasePerson {
         this.position = employee.position;
         this.createDate = employee.createDate;
         this.expireDate = employee.expireDate;
-        this.parentRootStaff = employee.parentRootStaff;
+        this.rootStaff = employee.rootStaff;
     }
 
     @Override

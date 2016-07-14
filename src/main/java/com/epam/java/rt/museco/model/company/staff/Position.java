@@ -28,7 +28,7 @@ public class Position {
     private DateTime createDate;
     private DateTime expireDate;
     @XmlJavaTypeAdapter(StaffAdapter.class)
-    private RootStaff parentRootStaff;
+    private RootStaff rootStaff;
 
     public Position() {
     }
@@ -121,18 +121,18 @@ public class Position {
         this.expireDate = expireDate;
     }
 
-    public RootStaff getParentRootStaff() {
-        return parentRootStaff;
+    public RootStaff getRootStaff() {
+        return this.rootStaff;
     }
 
-    public void setParentRootStaff(RootStaff parentRootStaff) {
-        Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
-        if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
-            if (this.parentRootStaff != null) if (this.parentRootStaff.getPosition(this.id) != null)
-                throw new IllegalStateException("Position-item exist in '" + this.parentRootStaff.getName() + "' staff-aggregator");
-            if (parentRootStaff != null) if (parentRootStaff.getPosition(this.id) == null)
-                throw new IllegalStateException("Position-item not exist in '" + parentRootStaff.getName() + "' staff-aggregator");
-            this.parentRootStaff = parentRootStaff;
+    public void setRootStaff(RootStaff rootStaff) {
+        Main.LOGGER.trace(".setRootStaff({})", rootStaff);
+        if (this.rootStaff == null || !this.rootStaff.equals(rootStaff)) {
+            if (this.rootStaff != null) if (this.rootStaff.getPosition(this.id) != null)
+                throw new IllegalStateException("Position-item exist in '" + this.rootStaff.getName() + "' staff-aggregator");
+            if (rootStaff != null) if (rootStaff.getPosition(this.id) == null)
+                throw new IllegalStateException("Position-item not exist in '" + rootStaff.getName() + "' staff-aggregator");
+            this.rootStaff = rootStaff;
         }
     }
 
@@ -143,7 +143,7 @@ public class Position {
         this.hourCost = position.hourCost;
         this.createDate = position.createDate;
         this.expireDate = position.expireDate;
-        this.parentRootStaff = position.parentRootStaff;
+        this.rootStaff = position.rootStaff;
     }
 
     @Override
