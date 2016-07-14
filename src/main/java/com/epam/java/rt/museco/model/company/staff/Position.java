@@ -1,12 +1,9 @@
 package com.epam.java.rt.museco.model.company.staff;
 
-import com.epam.java.rt.museco.Main;
 import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
 import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
 import org.joda.time.DateTime;
-import org.joda.time.Interval;
-import org.joda.time.ReadableInterval;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -27,7 +24,8 @@ public class Position {
     private Money salary;
     @XmlJavaTypeAdapter(MoneyAdapter.class)
     private Money hourCost;
-    private Interval dateLimits;
+    private DateTime createDate;
+    private DateTime expireDate;
     @XmlJavaTypeAdapter(StaffAdapter.class)
     private Staff parentStaff;
 
@@ -45,30 +43,6 @@ public class Position {
     public void setId(UUID id) {
         if (id == null) this.id = UUID.randomUUID();
         else this.id = id;
-    }
-
-    public ReadableInterval getDateLimits() {
-        return this.dateLimits;
-    }
-
-    public void setDateLimitsStart() {
-        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), new DateTime());
-        else this.dateLimits = new Interval(new DateTime(), this.dateLimits.getEnd());
-    }
-
-    public void setDateLimitsStart(DateTime startDate) {
-        if (this.dateLimits == null) this.dateLimits = new Interval(startDate, new DateTime());
-        else this.dateLimits = new Interval(startDate, this.dateLimits.getEnd());
-    }
-
-    public void setDateLimitsEnd() {
-        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), new DateTime());
-        else this.dateLimits = new Interval(this.dateLimits.getStart(), new DateTime());
-    }
-
-    public void setDateLimitsEnd(DateTime endDate) {
-        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), endDate);
-        else this.dateLimits = new Interval(this.dateLimits.getStart(), endDate);
     }
 
     public String getName() {
@@ -97,6 +71,49 @@ public class Position {
         if (hourCost.getAmount().compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("Hour cost amount should be more than zero");
         this.hourCost = Money.of(hourCost.getCurrencyUnit(), hourCost.getAmount());
+    }
+
+    public boolean isWithinCreateAndExpireDatesNow() {
+        return isWithinCreateAndExpireDates(new DateTime());
+    }
+
+    public boolean isWithinCreateAndExpireDates(DateTime checkDate) {
+        return !(checkDate == null || this.createDate == null) &&
+                (this.expireDate == null ? !this.createDate.isAfter(checkDate) :
+                this.expireDate.isAfter(checkDate) && !this.createDate.isAfter(checkDate));
+    }
+
+    private boolean isAcceptableCreateAndExpireDates(DateTime createDate, DateTime expireDate) {
+        return (createDate == null && expireDate == null) || (createDate != null && expireDate == null) ||
+                (createDate != null && !createDate.isAfter(expireDate));
+    }
+
+    public DateTime getCreateDate() {
+        return this.createDate;
+    }
+
+    public void setCreateDateNow() {
+        this.setCreateDate(new DateTime());
+    }
+
+    public void setCreateDate(DateTime createDate) {
+        if (!isAcceptableCreateAndExpireDates(createDate, this.expireDate))
+            throw new IllegalArgumentException("Begin date should be before or equal expire date");
+        this.createDate = createDate;
+    }
+
+    public DateTime getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDateNow() {
+        this.setExpireDate(new DateTime());
+    }
+
+    public void setExpireDate(DateTime expireDate) {
+        if (!isAcceptableCreateAndExpireDates(createDate, this.expireDate))
+            throw new IllegalArgumentException("Begin date should be defined first and should be before or equal expire date");
+        this.expireDate = expireDate;
     }
 
     public Staff getParentStaff() {

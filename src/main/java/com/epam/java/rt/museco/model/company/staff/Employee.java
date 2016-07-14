@@ -1,6 +1,5 @@
 package com.epam.java.rt.museco.model.company.staff;
 
-import com.epam.java.rt.museco.model.general.Term;
 import com.epam.java.rt.museco.model.general.Person;
 
 /**
@@ -8,7 +7,7 @@ import com.epam.java.rt.museco.model.general.Person;
  */
 public class Employee extends Person {
     private Position position;
-    private Term term = new Term();
+//    private Term term = new Term();
     private Staff parentStaff;
 
     public Employee() {

@@ -1,6 +1,5 @@
 package com.epam.java.rt.museco.model.company.activity;
 
-import com.epam.java.rt.museco.model.general.Term;
 import com.epam.java.rt.museco.model.company.warehouse.Material;
 import com.epam.java.rt.museco.model.company.staff.Employee;
 
@@ -16,7 +15,7 @@ public class Provision {
     private Order order;
     private List<Material> materialsFact = new ArrayList<Material>();
     private List<Employee> employeesFact = new ArrayList<Employee>();
-    private Term term;
+//    private Term term;
 
     public Provision() {
     }

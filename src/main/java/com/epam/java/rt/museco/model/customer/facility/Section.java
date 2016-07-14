@@ -1,7 +1,5 @@
 package com.epam.java.rt.museco.model.customer.facility;
 
-import com.epam.java.rt.museco.model.general.Term;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +15,7 @@ public class Section {
     private double wallArea;
     private List<Porch> porches = new ArrayList<Porch>();
     private List<Garage> garages = new ArrayList<Garage>();
-    private Term term;
+//    private Term term;
 
     public Section() {
     }

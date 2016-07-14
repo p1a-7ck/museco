@@ -1,7 +1,5 @@
 package com.epam.java.rt.museco.model.customer.facility;
 
-import com.epam.java.rt.museco.model.general.Term;
-
 import java.util.UUID;
 
 /**
@@ -14,7 +12,7 @@ public class Entry {
     private double floorArea;
     private double wallArea;
     private double ceilingArea;
-    private Term term;
+//    private Term term;
 
     public Entry() {
     }

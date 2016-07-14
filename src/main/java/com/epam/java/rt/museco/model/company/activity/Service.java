@@ -1,6 +1,5 @@
 package com.epam.java.rt.museco.model.company.activity;
 
-import com.epam.java.rt.museco.model.general.Term;
 import com.epam.java.rt.museco.model.company.warehouse.Material;
 import com.epam.java.rt.museco.model.company.staff.Position;
 
@@ -16,7 +15,7 @@ public class Service {
     private String name;
     private List<Material> materials = new ArrayList<Material>();
     private List<Position> positions = new ArrayList<Position>();
-    private Term term;
+//    private Term term;
 
     public Service() {
     }
