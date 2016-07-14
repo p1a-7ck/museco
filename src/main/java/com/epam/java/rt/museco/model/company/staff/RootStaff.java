@@ -1,5 +1,7 @@
 package com.epam.java.rt.museco.model.company.staff;
 
+import com.epam.java.rt.museco.Main;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -17,7 +19,7 @@ import java.util.UUID;
  */
 @XmlRootElement(name = "staff")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Staff {
+public class RootStaff {
     private String name;
     private String detail;
     @XmlElementWrapper
@@ -29,7 +31,7 @@ public class Staff {
     @XmlElementWrapper
     private List<Payment> payments = new ArrayList<Payment>();
 
-    public Staff() {
+    public RootStaff() {
     }
 
     public String getName() {
@@ -49,16 +51,26 @@ public class Staff {
     }
 
     public void addPosition(Position position) {
+        Main.LOGGER.trace(".addPosition({})", position);
         Position newPosition = new Position();
-        newPosition.copyOf(position).setParentStaff(this);
+        newPosition.copyOf(position);
         this.positions.add(newPosition);
+        newPosition.setParentRootStaff(this);
     }
 
-    public boolean isChildPosition(UUID id) {
+    public Position getPosition(UUID id) {
         for (Position position : this.positions)
             if (position.getId().equals(id))
-                return true;
-        return false;
+                return position;
+        return null;
+    }
+
+    public void removePosition(UUID id) {
+        for (Position position : this.positions)
+            if (position.getId().equals(id)) {
+                positions.remove(position);
+                break;
+            }
     }
 
     public boolean isChildEmployee(UUID id) {
@@ -70,7 +82,7 @@ public class Staff {
 
     @Override
     public String toString() {
-        return "Staff {" +
+        return "RootStaff {" +
                 "name=" + this.name +
                 ", detail=" + this.detail +
                 ", positions=" + this.positions +

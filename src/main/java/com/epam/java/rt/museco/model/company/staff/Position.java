@@ -1,5 +1,6 @@
 package com.epam.java.rt.museco.model.company.staff;
 
+import com.epam.java.rt.museco.Main;
 import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
 import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
@@ -27,7 +28,7 @@ public class Position {
     private DateTime createDate;
     private DateTime expireDate;
     @XmlJavaTypeAdapter(StaffAdapter.class)
-    private Staff parentStaff;
+    private RootStaff parentRootStaff;
 
     public Position() {
     }
@@ -58,9 +59,10 @@ public class Position {
     }
 
     public void setSalary(Money salary) {
-        if (salary.getAmount().compareTo(BigDecimal.ZERO) < 0)
+        Main.LOGGER.trace("setSalary({})", salary);
+        if (salary != null) if (salary.getAmount().compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("Salary amount should be more than zero");
-        this.salary = Money.of(salary.getCurrencyUnit(), salary.getAmount());
+        this.salary = salary;
     }
 
     public Money getHourCost() {
@@ -68,9 +70,10 @@ public class Position {
     }
 
     public void setHourCost(Money hourCost) {
-        if (hourCost.getAmount().compareTo(BigDecimal.ZERO) < 0)
+        Main.LOGGER.trace("setSalary({})", salary);
+        if (hourCost != null) if (hourCost.getAmount().compareTo(BigDecimal.ZERO) < 0)
             throw new IllegalArgumentException("Hour cost amount should be more than zero");
-        this.hourCost = Money.of(hourCost.getCurrencyUnit(), hourCost.getAmount());
+        this.hourCost = hourCost;
     }
 
     public boolean isWithinCreateAndExpireDatesNow() {
@@ -116,24 +119,29 @@ public class Position {
         this.expireDate = expireDate;
     }
 
-    public Staff getParentStaff() {
-        return parentStaff;
+    public RootStaff getParentRootStaff() {
+        return parentRootStaff;
     }
 
-    public void setParentStaff(Staff parentStaff) {
-        if (this.parentStaff != null) if (!this.parentStaff.isChildPosition(this.id))
-            throw new IllegalArgumentException("There are no selected position-object in staff-object aggregator");
-        this.parentStaff = parentStaff;
+    public void setParentRootStaff(RootStaff parentRootStaff) {
+        Main.LOGGER.trace(".setParentRootStaff({})", parentRootStaff);
+        if (parentRootStaff == null || !parentRootStaff.equals(this.parentRootStaff)) {
+            if (this.parentRootStaff != null) if (this.parentRootStaff.getPosition(this.id) != null)
+                throw new IllegalStateException("Position-item exist in staff-aggregator");
+            if (parentRootStaff != null) if (parentRootStaff.getPosition(this.id) == null)
+                throw new IllegalStateException("Position-item not exist in staff-aggregator");
+            this.parentRootStaff = parentRootStaff;
+        }
     }
 
-    public Position copyOf(Position position) {
+    public void copyOf(Position position) {
         this.setId(position.getId());
         this.setName(position.getName());
         this.setSalary(position.getSalary());
         this.setHourCost(position.getHourCost());
-//        this.setTerm(position.getTerm());
-        this.setParentStaff(position.getParentStaff());
-        return this; // return Position for inline-code use
+        this.setCreateDate(position.getCreateDate());
+        this.setExpireDate(position.getExpireDate());
+//        this.setParentRootStaff(position.getParentRootStaff());
     }
 
     @Override

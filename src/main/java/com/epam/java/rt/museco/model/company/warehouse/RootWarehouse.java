@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * Municipal Service Company
  */
-public class Warehouse {
+public class RootWarehouse {
     private List<Material> materials = new ArrayList<Material>();
     private List<Invoice> invoices = new ArrayList<Invoice>();
     private List<Payment> payments = new ArrayList<Payment>();
     private List<Transfer> transfers = new ArrayList<Transfer>();
 
-    public Warehouse() {
+    public RootWarehouse() {
     }
 
 }

@@ -1,6 +1,6 @@
 package com.epam.java.rt.museco.model.auth;
 
-import com.epam.java.rt.museco.model.general.Person;
+import com.epam.java.rt.museco.model.general.BasePerson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class User {
     private UUID id = UUID.randomUUID();
     private String userName;
     private String passwordHash;
-    private Person person;
+    private BasePerson basePerson;
     private List<Role> roles = new ArrayList<Role>();
 //    private Term term;
 

@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * Municipal Service Company
  */
-public class Auth {
+public class RootAuth {
     List<Action> actions = new ArrayList<Action>();
     List<Role> roles = new ArrayList<Role>();
     List<User> users = new ArrayList<User>();
 
-    public Auth() {
+    public RootAuth() {
     }
 }

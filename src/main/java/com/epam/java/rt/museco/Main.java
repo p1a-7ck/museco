@@ -1,7 +1,7 @@
 package com.epam.java.rt.museco;
 
+import com.epam.java.rt.museco.model.company.staff.RootStaff;
 import com.epam.java.rt.museco.model.company.staff.Position;
-import com.epam.java.rt.museco.model.company.staff.Staff;
 import com.epam.java.rt.museco.service.marshal.DataMarshaller;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -18,7 +18,7 @@ public class Main {
     public final static Logger LOGGER = LoggerFactory.getLogger("LOGGER");
     public static void main(String[] args) throws JAXBException, FileNotFoundException {
 
-        Staff staff = new Staff();
+        RootStaff rootStaff = new RootStaff();
         Position position = new Position();
 
         position.setId();
@@ -28,17 +28,17 @@ public class Main {
 //        Term term = new Term();
 //        term.setBeginDate();
 //        position.setTerm(term);
-        // position.setParentStaff();
+        // position.setParentRootStaff();
 
-        staff.setName("BI-SERVICE");
-        staff.setDetail("SINCE 2014");
-        staff.addPosition(position);
-        System.out.println(staff);
+        rootStaff.setName("BI-SERVICE");
+        rootStaff.setDetail("SINCE 2014");
+        rootStaff.addPosition(position);
+        System.out.println(rootStaff);
 
         DataMarshaller dataMarshaller = new DataMarshaller();
         dataMarshaller.output(position);
 
-        dataMarshaller.output(staff);
+        dataMarshaller.output(rootStaff);
 
     }
 }

@@ -7,7 +7,7 @@ import java.util.UUID;
 /**
  * Municipal Service Company
  */
-public class Facility {
+public class RootFacility {
     private UUID id = UUID.randomUUID();
     private String name;
     private String address;
@@ -17,6 +17,6 @@ public class Facility {
     private List<Section> sections = new ArrayList<Section>();
 
 
-    public Facility() {
+    public RootFacility() {
     }
 }

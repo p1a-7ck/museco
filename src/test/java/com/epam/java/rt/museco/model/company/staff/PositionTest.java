@@ -1,7 +1,12 @@
 package com.epam.java.rt.museco.model.company.staff;
 
+import com.epam.java.rt.museco.Main;
+import org.joda.money.CurrencyUnit;
+import org.joda.money.Money;
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -11,7 +16,76 @@ import static org.junit.Assert.*;
 public class PositionTest {
 
     @Test
+    public void initTest() {
+        Main.LOGGER.trace(".initTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getId());
+        assertNull(position.getName());
+        assertNull(position.getSalary());
+        assertNull(position.getHourCost());
+        assertNull(position.getCreateDate());
+        assertNull(position.getExpireDate());
+        assertNull(position.getParentRootStaff());
+    }
+
+    @Test
+    public void setGetIdTest() {
+        Main.LOGGER.trace(".setGetIdTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getId());
+        position.setId();
+        assertNotNull(position.getId());
+        UUID id = UUID.randomUUID();
+        position.setId(id);
+        assertEquals(id, position.getId());
+    }
+
+    @Test
+    public void setGetNameTest() {
+        Main.LOGGER.trace(".setGetNameTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getName());
+        String name = "NAME";
+        position.setName(name);
+        assertEquals(name, position.getName());
+        name = null;
+        position.setName(name);
+        assertNull(position.getName());
+    }
+
+    @Test
+    public void setGetSalaryHourCostTest() {
+        Main.LOGGER.trace(".setGetSalaryHourCostTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getSalary());
+        assertNull(position.getHourCost());
+        Money salary = Money.of(CurrencyUnit.of("KZT"), 10000);
+        position.setSalary(salary);
+        assertEquals(salary, position.getSalary());
+        salary = Money.of(CurrencyUnit.of("KZT"), 0);
+        position.setSalary(salary);
+        assertEquals(salary, position.getSalary());
+        salary = null;
+        position.setSalary(salary);
+        assertNull(position.getSalary());
+        Money hourCost = Money.of(CurrencyUnit.of("KZT"), 1000);
+        position.setHourCost(hourCost);
+        assertEquals(hourCost, position.getHourCost());
+        hourCost = Money.of(CurrencyUnit.of("KZT"), 0);
+        position.setHourCost(hourCost);
+        assertEquals(hourCost, position.getHourCost());
+        hourCost = null;
+        position.setHourCost(hourCost);
+        assertNull(position.getHourCost());
+    }
+
+    @Test
     public void createExpireDatesNowTest() {
+        Main.LOGGER.trace(".createExpireDatesNowTest()");
         Position position = new Position();
         assertNotNull(position);
         assertNull(position.getCreateDate());
@@ -25,6 +99,7 @@ public class PositionTest {
 
     @Test
     public void createExpireDatesTest() {
+        Main.LOGGER.trace(".createExpireDatesTest()");
         Position position = new Position();
         assertNotNull(position);
         assertNull(position.getCreateDate());
@@ -40,5 +115,24 @@ public class PositionTest {
         assertTrue(position.isWithinCreateAndExpireDatesNow());
     }
 
+    @Test
+    public void setGetParentRootStaffTest() {
+        Main.LOGGER.trace(".setGetParentRootStaffTest()");
+        Position position = new Position();
+        assertNotNull(position);
+        assertNull(position.getParentRootStaff());
+        position.setId();
+        RootStaff rootStaff = new RootStaff();
+        rootStaff.addPosition(position);
+        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+        position.setParentRootStaff(rootStaff);
+        Main.LOGGER.trace("position.setParentRootStaff({})", rootStaff);
+        assertEquals(rootStaff, position.getParentRootStaff());
+        rootStaff.removePosition(position.getId());
+        rootStaff = null;
+        Main.LOGGER.trace("position.setParentRootStaff(null)");
+        position.setParentRootStaff(rootStaff);
+        assertNull(position.getParentRootStaff());
+    }
 
 }

@@ -8,13 +8,13 @@ import java.util.UUID;
  * first name, last name and middle name, and should return concatenated
  * name value
  */
-public class Person {
+public class BasePerson {
     private UUID id;
     private String firstName;
     private String lastName;
     private String middleName;
 
-    public Person() {
+    public BasePerson() {
     }
 
     public UUID getId() {
