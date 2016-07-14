@@ -2,10 +2,11 @@ package com.epam.java.rt.museco;
 
 import com.epam.java.rt.museco.model.company.staff.Position;
 import com.epam.java.rt.museco.model.company.staff.Staff;
-import com.epam.java.rt.museco.model.general.Term;
 import com.epam.java.rt.museco.service.marshal.DataMarshaller;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
@@ -14,6 +15,7 @@ import java.io.FileNotFoundException;
  * Municipal Service Company
  */
 public class Main {
+    public final static Logger LOGGER = LoggerFactory.getLogger("LOGGER");
     public static void main(String[] args) throws JAXBException, FileNotFoundException {
 
         Staff staff = new Staff();
@@ -23,8 +25,8 @@ public class Main {
         position.setName("manager");
         position.setSalary(Money.of(CurrencyUnit.of("KZT"), 250000));
         position.setHourCost(Money.of(CurrencyUnit.of("KZT"), 5000));
-        Term term = new Term();
-        term.setBeginDate();
+//        Term term = new Term();
+//        term.setBeginDate();
 //        position.setTerm(term);
         // position.setParentStaff();
 

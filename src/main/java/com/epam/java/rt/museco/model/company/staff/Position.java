@@ -1,9 +1,12 @@
 package com.epam.java.rt.museco.model.company.staff;
 
-import com.epam.java.rt.museco.model.general.Term;
+import com.epam.java.rt.museco.Main;
 import com.epam.java.rt.museco.service.marshal.MoneyAdapter;
 import com.epam.java.rt.museco.service.marshal.StaffAdapter;
 import org.joda.money.Money;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.ReadableInterval;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,7 +27,7 @@ public class Position {
     private Money salary;
     @XmlJavaTypeAdapter(MoneyAdapter.class)
     private Money hourCost;
-    private Term term = new Term();
+    private Interval dateLimits;
     @XmlJavaTypeAdapter(StaffAdapter.class)
     private Staff parentStaff;
 
@@ -44,15 +47,29 @@ public class Position {
         else this.id = id;
     }
 
-//    public Term getTerm() {
-//        Term copyTerm = new Term();
-//        return copyTerm.copyOf(this.term);
-//    }
+    public ReadableInterval getDateLimits() {
+        return this.dateLimits;
+    }
 
-//    public void setTerm(Term term) {
-//        // could be some checks
-//        this.term.copyOf(term);
-//    }
+    public void setDateLimitsStart() {
+        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), new DateTime());
+        else this.dateLimits = new Interval(new DateTime(), this.dateLimits.getEnd());
+    }
+
+    public void setDateLimitsStart(DateTime startDate) {
+        if (this.dateLimits == null) this.dateLimits = new Interval(startDate, new DateTime());
+        else this.dateLimits = new Interval(startDate, this.dateLimits.getEnd());
+    }
+
+    public void setDateLimitsEnd() {
+        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), new DateTime());
+        else this.dateLimits = new Interval(this.dateLimits.getStart(), new DateTime());
+    }
+
+    public void setDateLimitsEnd(DateTime endDate) {
+        if (this.dateLimits == null) this.dateLimits = new Interval(new DateTime(), endDate);
+        else this.dateLimits = new Interval(this.dateLimits.getStart(), endDate);
+    }
 
     public String getName() {
         return name;
@@ -106,11 +123,6 @@ public class Position {
     public String toString() {
         return "Position {" +
                 "id=" + this.id +
-                ", name=" + this.name +
-                ", salary=" + this.salary +
-                ", hourCost=" + this.hourCost +
-                ", term=" + this.term +
-                ", parentStaff=" + this.parentStaff.getName() +
                 "}";
     }
 }
