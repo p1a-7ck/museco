@@ -15,19 +15,19 @@ import static org.junit.Assert.*;
  */
 public class PositionTest {
 
-    @Test
-    public void initTest() {
-        Main.LOGGER.trace(".initTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getId());
-        assertNull(position.getName());
-        assertNull(position.getSalary());
-        assertNull(position.getHourCost());
-        assertNull(position.getCreateDate());
-        assertNull(position.getExpireDate());
-        assertNull(position.getRootStaff());
-    }
+//    @Test
+//    public void initTest() {
+//        Main.LOGGER.trace(".initTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getId());
+//        assertNull(position.getName());
+//        assertNull(position.getSalary());
+//        assertNull(position.getHourCost());
+//        assertNull(position.getCreateDate());
+//        assertNull(position.getExpireDate());
+//        assertNull(position.getRootStaff());
+//    }
 
     @Test
     public void setGetIdTest() {
@@ -84,91 +84,91 @@ public class PositionTest {
         assertNull(position.getHourCost());
     }
 
-    @Test
-    public void createExpireDatesNowTest() {
-        Main.LOGGER.trace(".createExpireDatesNowTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getCreateDate());
-        assertNull(position.getExpireDate());
-        position.setCreateDateNow();
-        assertNotNull(position.getCreateDate());
-        position.setExpireDateNow();
-        assertNotNull(position.getExpireDate());
-        assertFalse(position.isWithinCreateAndExpireDatesNow());
-    }
-
-    @Test
-    public void createExpireDatesTest() {
-        Main.LOGGER.trace(".createExpireDatesTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getCreateDate());
-        assertNull(position.getExpireDate());
-        DateTime createDate = DateTime.now().plusDays(-10);
-        position.setCreateDate(createDate);
-        assertEquals(createDate, position.getCreateDate());
-        DateTime expireDate = DateTime.now().plusDays(10);
-        position.setExpireDate(expireDate);
-        assertEquals(expireDate, position.getExpireDate());
-        DateTime checkDate = DateTime.now().plusDays(15);
-        assertFalse(position.isWithinCreateAndExpireDates(checkDate));
-        assertTrue(position.isWithinCreateAndExpireDatesNow());
-    }
-
-    @Test
-    public void setGetParentRootStaffTest() {
-        Main.LOGGER.trace(".setGetParentRootStaffTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getRootStaff());
-        position.setId();
-        RootStaff rootStaff = new RootStaff();
-        rootStaff.addPosition(position);
-        Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        position.setRootStaff(rootStaff);
-        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
-        assertEquals(rootStaff, position.getRootStaff());
-        rootStaff.removePosition(position.getId());
-        rootStaff = null;
-        Main.LOGGER.trace("position.setRootStaff(null)");
-        position.setRootStaff(rootStaff);
-        assertNull(position.getRootStaff());
-    }
-
-    @Test
-    public void updatePositionTest() {
-        Main.LOGGER.trace(".updatePOsitionTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getRootStaff());
-        position.setId();
-        RootStaff rootStaff = new RootStaff();
-        rootStaff.addPosition(position);
-        Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
-        position = rootStaff.getPosition(position.getId());
-        position.setName("RENAMED");
-        assertEquals(position, rootStaff.getPosition(position.getId()));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void setGetParentRootStaffExceptionTest() {
-        Main.LOGGER.trace(".setGetParentRootStaffExceptionTest()");
-        Position position = new Position();
-        assertNotNull(position);
-        assertNull(position.getRootStaff());
-        position.setId();
-        RootStaff rootStaff = new RootStaff();
-        rootStaff.addPosition(position);
-        Main.LOGGER.trace("rootStaff.addPosition({})", position);
-        position.setRootStaff(rootStaff);
-        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
-        assertEquals(rootStaff, position.getRootStaff());
-//        rootStaff.removePosition(position.getId()); // this line commented in an effort to result ISE
-        rootStaff = null;
-        Main.LOGGER.trace("position.setRootStaff(null)");
-        position.setRootStaff(rootStaff); // here should be IllegalStateException
-    }
+//    @Test
+//    public void createExpireDatesNowTest() {
+//        Main.LOGGER.trace(".createExpireDatesNowTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getCreateDate());
+//        assertNull(position.getExpireDate());
+//        position.setCreateDateNow();
+//        assertNotNull(position.getCreateDate());
+//        position.setExpireDateNow();
+//        assertNotNull(position.getExpireDate());
+//        assertFalse(position.isWithinCreateAndExpireDatesNow());
+//    }
+//
+//    @Test
+//    public void createExpireDatesTest() {
+//        Main.LOGGER.trace(".createExpireDatesTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getCreateDate());
+//        assertNull(position.getExpireDate());
+//        DateTime createDate = DateTime.now().plusDays(-10);
+//        position.setCreateDate(createDate);
+//        assertEquals(createDate, position.getCreateDate());
+//        DateTime expireDate = DateTime.now().plusDays(10);
+//        position.setExpireDate(expireDate);
+//        assertEquals(expireDate, position.getExpireDate());
+//        DateTime checkDate = DateTime.now().plusDays(15);
+//        assertFalse(position.isWithinCreateAndExpireDates(checkDate));
+//        assertTrue(position.isWithinCreateAndExpireDatesNow());
+//    }
+//
+//    @Test
+//    public void setGetParentRootStaffTest() {
+//        Main.LOGGER.trace(".setGetParentRootStaffTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getRootStaff());
+//        position.setId();
+//        RootStaff rootStaff = new RootStaff();
+//        rootStaff.addPosition(position);
+//        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+//        position.setRootStaff(rootStaff);
+//        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
+//        assertEquals(rootStaff, position.getRootStaff());
+//        rootStaff.removePosition(position.getId());
+//        rootStaff = null;
+//        Main.LOGGER.trace("position.setRootStaff(null)");
+//        position.setRootStaff(rootStaff);
+//        assertNull(position.getRootStaff());
+//    }
+//
+//    @Test
+//    public void updatePositionTest() {
+//        Main.LOGGER.trace(".updatePOsitionTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getRootStaff());
+//        position.setId();
+//        RootStaff rootStaff = new RootStaff();
+//        rootStaff.addPosition(position);
+//        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+//        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
+//        position = rootStaff.getPosition(position.getId());
+//        position.setName("RENAMED");
+//        assertEquals(position, rootStaff.getPosition(position.getId()));
+//    }
+//
+//    @Test(expected = IllegalStateException.class)
+//    public void setGetParentRootStaffExceptionTest() {
+//        Main.LOGGER.trace(".setGetParentRootStaffExceptionTest()");
+//        Position position = new Position();
+//        assertNotNull(position);
+//        assertNull(position.getRootStaff());
+//        position.setId();
+//        RootStaff rootStaff = new RootStaff();
+//        rootStaff.addPosition(position);
+//        Main.LOGGER.trace("rootStaff.addPosition({})", position);
+//        position.setRootStaff(rootStaff);
+//        Main.LOGGER.trace("position.setRootStaff({})", rootStaff);
+//        assertEquals(rootStaff, position.getRootStaff());
+////        rootStaff.removePosition(position.getId()); // this line commented in an effort to result ISE
+//        rootStaff = null;
+//        Main.LOGGER.trace("position.setRootStaff(null)");
+//        position.setRootStaff(rootStaff); // here should be IllegalStateException
+//    }
 
 }

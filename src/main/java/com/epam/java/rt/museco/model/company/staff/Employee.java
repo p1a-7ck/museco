@@ -1,7 +1,7 @@
 package com.epam.java.rt.museco.model.company.staff;
 
 import com.epam.java.rt.museco.Main;
-import com.epam.java.rt.museco.model.general.BasePerson;
+import com.epam.java.rt.museco.model.general.PersonName;
 import org.joda.time.DateTime;
 
 import java.util.UUID;
@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Municipal Service Company
  */
-public class Employee extends BasePerson {
+public class Employee extends PersonName {
     private UUID id;
     private Position position;
     private DateTime createDate;
@@ -39,13 +39,13 @@ public class Employee extends BasePerson {
     }
 
     public void setPosition(Position position) {
-        if (position != null) {
-            if (this.rootStaff == null || !this.rootStaff.equals(position.getRootStaff()))
-                throw new IllegalStateException("There are no staff-aggregator or position have another staff-aggregator");
-            if (this.rootStaff.getPosition(position.getId()) == null)
-                throw new IllegalStateException("There are no position in staff-aggregator");
-        }
-        this.position = position;
+//        if (position != null) {
+//            if (this.rootStaff == null || !this.rootStaff.equals(position.getRootStaff()))
+//                throw new IllegalStateException("There are no staff-aggregator or position have another staff-aggregator");
+//            if (this.rootStaff.getPosition(position.getId()) == null)
+//                throw new IllegalStateException("There are no position in staff-aggregator");
+//        }
+//        this.position = position;
     }
 
     public boolean isWithinCreateAndExpireDatesNow() {

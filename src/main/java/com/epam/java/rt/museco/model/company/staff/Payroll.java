@@ -82,6 +82,8 @@ public class Payroll {
                 throw new IllegalStateException("There are no staff-aggregator or payment have another staff-aggregator");
             if (this.rootStaff.getPayment(payment.getId()) == null)
                 throw new IllegalStateException("There are no payment in staff-aggregator");
+            if (payment.getPayroll(this.id) == null)
+                throw new IllegalStateException("There are no payroll in payment");
         }
         this.payment = payment;
     }
